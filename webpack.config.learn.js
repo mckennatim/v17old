@@ -37,6 +37,7 @@ module.exports = env =>{
       new CleanWebpackPlugin(),
       new webpack.HotModuleReplacementPlugin(),
       new HtmlWebpackPlugin({
+        
         hash: false,
         template: './src/index.html',
         filename: './index.html'

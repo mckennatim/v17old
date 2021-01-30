@@ -1,18 +1,14 @@
 /*webpack 5 with react */
 import React from 'react';
 import ReactDOM from 'react-dom';
+import {HashRouter as Router} from 'react-router-dom';
 import {App} from './components/App.jsx'
  
-const title = 'React with Webpack and Babel';
+const title = 'Timecards - Jobs';
 
-console.log('hello webpack dod')
- 
 ReactDOM.render(
-  <App title={title}/>,
+  <Router>
+    <App title={title}/>,
+  </Router>,
   document.getElementById('app')
 );
-
-
-/*index.js without react  
-console.log('hello webpack dod')
-*/

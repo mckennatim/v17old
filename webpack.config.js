@@ -9,7 +9,7 @@ module.exports = env =>{
     mode:'development',
     entry: path.resolve(__dirname, `./${appdir}/src/index.js`),
     output: {
-      filename: '[name].[hash].js',
+      filename: '[name].[fullhash].js',
       path: path.resolve(__dirname, `./${appdir}/dist`),
     },
     module: {
@@ -45,7 +45,6 @@ module.exports = env =>{
         cleanOnceBeforeBuildPatterns: ['*.js', '*.js.map'] 
       }),
       new HtmlWebpackPlugin({
-        hash: false,
         template: './src/index.html',
         filename: './index.html',
         title: 'mydogfood'
