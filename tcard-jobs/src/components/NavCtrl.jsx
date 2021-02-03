@@ -9,8 +9,9 @@ function NavCtrl(props) {
   const blajobs = [{id:'', job:'', category:'', week:'', yr:''}]
   const[tings, settings]= useState({})
   const[allJobs, setAllJobs]=useState(blajobs)
-  const[jobs2edit, setJobs2edit] = useState(blajobs)
-  const[defaultFound, setDefaultFound] = useState([{id:0, job:'frog and cat'}])
+  const[job2edit, setJob2edit] = useState('')
+  const[defaultFound, setDefaultFound] = useState([])
+  const[multi, setMulti]=useState(1)
   const navigate=useNavigate()
   
   useEffect(()=>{
@@ -21,6 +22,7 @@ function NavCtrl(props) {
   const getAllJobs=()=>{
     fetchAllJobs()
       .then((res)=>{
+        console.log('res: ', res)
         setAllJobs(res.jobs)
       })
   }
@@ -32,9 +34,9 @@ function NavCtrl(props) {
       })
   }
 
-  const handleJobs2edit =(j)=>{
+  const handleJob2edit =(j)=>{
     console.log('j: ', j)
-    setJobs2edit(j)
+    setJob2edit(j)
     navigate("/addjob")
   }
 
@@ -43,7 +45,11 @@ function NavCtrl(props) {
     setDefaultFound(editedJobs)
   }
 
-
+  const toggleMulti=()=>{
+    setMulti(!multi)
+    console.log('multi: ', multi)
+  }
+  
 
   const renderNav =()=>{
     return(
@@ -52,10 +58,12 @@ function NavCtrl(props) {
         <nav>
           <Link to="/"> jobs </Link>
           <Link to="/addjob"> addjob </Link>
+          <a href="" onClick={toggleMulti} >toggleMulti</a>
         </nav>
+
         <Routes>
-          <Route path="/" element={<Jobs firstday={tings.firstday} allJobs={allJobs} sendJobs2edit={handleJobs2edit} defaultFound={defaultFound}/>} />
-          <Route path="addjob" element={<AddJob jobs2edit={jobs2edit} dispEditedJobs={dispDefaultFound} />} />
+          <Route path="/" element={<Jobs firstday={tings.firstday} allJobs={allJobs} sendJob2edit={handleJob2edit} defaultFound={defaultFound}/>} />
+          <Route path="addjob" element={<AddJob job2edit={job2edit} displayEditedJobs={dispDefaultFound} />} />
         </Routes>
       </div>      
     )

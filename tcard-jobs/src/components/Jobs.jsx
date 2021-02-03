@@ -1,9 +1,9 @@
 import React,{useState, useEffect, useReducer} from 'react'
 import {getDateInfo, getDateOfWeek} from '../utilities/wfuncs'
-import {fetchJobs4week} from '../fetches'
+import {fetchJobs4week, postJob, postJobs} from '../fetches'
+import {AddJob} from './AddJob.jsx'
 
-
-const Jobs =({firstday,allJobs,sendJobs2edit,defaultFound})=>{
+const Jobs =({firstday,allJobs,sendJob2edit,defaultFound})=>{
    
   const blajobs = [{id:'', job:'', category:'', week:'', yr:''}]
   const [foundJobs, setFoundJobs] = useState(defaultFound)
@@ -38,30 +38,61 @@ const Jobs =({firstday,allJobs,sendJobs2edit,defaultFound})=>{
     dispatchDateInfo({ type: 'changeDateStr', payload: nv })
     fetchJobs4week(wk, yr)
       .then((res) => {
-        setJobs4week(res.jobs)
+        const ajobs = res.jobs.map((a)=>{
+          a.active=1
+          return a
+        })
+        console.log('ajobs: ', ajobs)
+        setJobs4week(ajobs)
       })
   }
 
-  const onChecked=(a)=>{
-    const ojob = [...jobs4week]
-    const idx = ojob.findIndex((o)=>o.id==a.id)
-    ojob[idx].active = !a.active*1
-    setJobs4week(ojob)
+  const onChecked=(e)=>{
+    console.log('e.target.name, e.target.checked: ', e.target.name, e.target.checked)
+    const j4w = [...jobs4week]
+    j4w[e.target.name].active = e.target.checked
+    // const idx = ojob
+    // .findIndex((o)=>o.id==a.id)
+    // ojob[idx].active = !a.active*1
+    setJobs4week(j4w)
   }
 
   const save2week=()=>{
     console.log('save2week')
+    const savejobs =jobs4week
+    .filter(j=>j.active)
+    .map((d)=>{
+      delete d.id
+      delete d.default
+      delete d.coid
+      d.active=1
+      d.week = dateInfo.week
+      d.year = dateInfo.yr
+      return d
+    })
+    console.log('savejobs,dateInfo.week,dateInfo.yr: ', savejobs,dateInfo.week,dateInfo.yr)
+    postJobs(savejobs, dateInfo.week, dateInfo.yr).then(()=>{
+      setJobs4week(savejobs)
+    })
   }
 
   const editJob=(e)=>()=>{
-    const jobs2edit = allJobs.filter((a)=>a.job==e.job)
+    console.log('foundJobs.filter(j=>j.job==e.kob): ', foundJobs.filter(j=>j.job==e.job))
+    const jobs2edit = e.job
     console.log(jobs2edit)
-    sendJobs2edit(jobs2edit)
+    sendJob2edit(jobs2edit)
   }
 
-  const onCheckedFound=()=>{
-    console.log('onchecked found')
-  }
+  // const onCheckedFound=(j)=>(e)=>{
+  //   console.log('j.job, e.target.checked: ', j.job, e.target.checked, e.target.name)
+  //   const njobs = [...foundJobs]
+  //   njobs[e.target.name].default=e.target.checked
+  //   setFoundJobs(njobs)
+  //   if(category.length>0){
+
+  //   }
+  //   postJob({job:j.job, default:e.target.checked})
+  // }
 
   const search=(e)=>{
     const sel = e.target.value.toLowerCase()
@@ -78,9 +109,12 @@ const Jobs =({firstday,allJobs,sendJobs2edit,defaultFound})=>{
   }
 
   const moveUp=(a)=>()=>{
-    const b = {...a}
-    b.active=1
-    setJobs4week([...jobs4week, b])
+    const isdup = jobs4week.filter(j=>j.job==a.job && j.category==a.category).length>0
+    if (!isdup){
+      const b = {...a}
+      b.active=1
+      setJobs4week([...jobs4week, b])
+    }
   }
 
   const renderHeader = ()=>{
@@ -115,9 +149,9 @@ const Jobs =({firstday,allJobs,sendJobs2edit,defaultFound})=>{
       <ul style={style.myli.ul}>
       {jobs4week
         //.filter((ajob)=>this.fil(ajob))
-        .map((ajob)=>{
+        .map((ajob,i)=>{
         return (
-        <li  key={ajob.id} style={style.myli.li}>
+        <li  key={i} style={style.myli.li}>
           <div style={style.myli.idx}>
           </div>
           <div style={style.myli.job}> 
@@ -126,7 +160,7 @@ const Jobs =({firstday,allJobs,sendJobs2edit,defaultFound})=>{
           <div style={style.myli.cat}>
             {ajob.category}</div>
           <div style={style.myli.act}>
-            <input style={style.myli.ck} type="checkbox" checked= {ajob.active} onChange={onChecked.bind(null, ajob)}></input>
+            <input name={i} style={style.myli.ck} type="checkbox" checked= {ajob.active} onChange={onChecked}></input>
           </div>
         </li >)
       })}
@@ -136,21 +170,22 @@ const Jobs =({firstday,allJobs,sendJobs2edit,defaultFound})=>{
   }
 
   const renderSearched=()=>{
-    const jobs = foundJobs.map((ajob)=>{
+    const jobs = foundJobs.map((ajob,i)=>{
       return (
-        <li  key={ajob.id} style={style.myli.li}>
+        <li  key={i} style={style.myli.li}>
           <div style={style.myli.idx}>
             <span style={style.myli.idxsp} onClick={editJob(ajob)}>&#9998;</span>   
           </div>
           <div style={style.myli.job}> 
-            {ajob.job} 
+            <span>{ajob.job} </span>
+            {ajob.default==1 && <span style={style.myli.sc}>def</span>}
           </div>
           <div style={style.myli.cat}>
             {ajob.category}</div>
 
-          <div style={style.myli.act}>
-            <input style={style.myli.ck} type="checkbox" checked= {ajob.active} onChange={onCheckedFound.bind(null, ajob)}></input>
-          </div>
+          {/* <div style={style.myli.act}>
+            <input name={i} style={style.myli.ck} type="checkbox" checked= {ajob.default} onChange={onCheckedFound(ajob)}></input>
+          </div> */}
           <div style={style.myli.up}>
             <span style={style.myli.ar} onClick={moveUp(ajob)}>&#8593;</span>
           </div>
@@ -237,6 +272,13 @@ const style = {
       padding: '6px',
       overflow: 'hidden',
       border: 'solid 1px black'
+    },
+    sc:{
+      fontSize: '9px',
+      fonntWeight: 'bold',
+      fontVariant: "small-caps",
+      background: 'whitesmoke',
+      color: 'blue'
     },
     idx:{
       float: 'left',

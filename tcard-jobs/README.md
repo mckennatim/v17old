@@ -79,24 +79,113 @@ functions: addjobs
 >index: (coid,job,category), week, yr, job, category coid
 
 ### jobs
-> fields: coid, job, categories[{cat:'',hrs:'',labor:''}], address, contacts[{name:phones[{mobile: 8883334444}], email:''}] startdate, enddate, active, archived, hrs, labor, material, sub, ovhprf
-> index: (coid,job), startdate, endate, active, archived
+> fields: coid, job, categories[{cat:'',hrs:'',labor:'',default:0}], address, contacts[{name:phones[{mobile: 8883334444}], email:''}] startdate, enddate, archived, hrs, labor, material, sub, ovhprf total
+> index: (coid,job), startdate, endate, default, catdefault
+
+### work done on the server
+current tcard.js for getting default jobs
+
+    if(jobs.length ==0){
+      var q5 = conn.query('SELECT `job`, `category` FROM jobcatact WHERE `active`=1 AND week=0 AND coid=? ORDER BY idx, category
+becomes 
+
+    SELECT * FROM jobs WHERE coid=? and (default = 1 defcat =1)
+    
+    const djobs = results.reduce((acc,r)=>{
+      if (r.default){
+        const rec = {job:r.job, category:''}
+        acc.push(rec)
+      }
+      if (defcat){
+        const cats = j.categories.map((c)=>{
+          if(c.default){
+            acc.push({job:r.job, category:c.category})
+          }
+        })
+      }
+    }[])
+    res.jsonp={wk:2k, wkarr:wkarr, jobs:djobs, wstat=wstat[0]}
+
+fetching allJobs becomes
+
+    SELECT * FROM jobs WHERE coid=? AND archived = 0 
+    const djobs = results.reduce((acc,r)=>{
+      if (r.default){
+        const rec = {job:r.job, category:''}
+        acc.push(rec)
+      }
+      if (defcat){
+        const cats = j.categories.map((c)=>{
+          if(c.default){
+            acc.push({job:r.job, category:c.category})
+          }
+        })
+      }
+    }[])
+    res.jsonp={alljobs:djobs} 
+
+updating from foundJobs default checkbox
+
+    req.body = {job:'jobname', category:'ifiscategorystr',default:def}
+    const {job,cat,def}=req.body
+    If (category.length ==0){
+      UPDATE jobs SET default=def WHERE coid=? AND job=?
+    }else{
+      SELECT categories FROM jobs WHERE coid=? AND job=?
+        const cats = results[0].map((c)=>{
+          if(c.category==cat){
+            c.default=def
+          }
+        })
+        UPDATE jobs SET categories=cats WHERE coid=? AND job=?
+    }
+    
+fecthing for modjobs become 
+
+    SELECT * FROM jobs WHERE coid=? AND job=?
+
+### work to be done on the app
+
+    const AddJob =({jobName, dispEditedJobs})=>{
+      const [ajob, setaJob] = useState({})
+      const [beingEdited, setBeingEdited]=useState({})
+
+      useEffect(()=>{
+        getaJob(jobName)
+      },[])
+
+      const getAjob=(jn)=>{
+        fetchaJob(jn)
+      .then((res)=>{
+        setaJob({...res})
+        setBeingEdited({...res})
+      })
+      }    
+    }
+
+# app narative
+A slimmed down version of things in jobcosts
+## navctrl
+init: 
+> pulls up `jobs4week` for current week from `jobcatact`. If no jobs pulls up defaults from jobs
+> pulls up un-archived `jobs` from `jobs`, creating and `allJobs` array with just job and category and default.
 
 ## jobs page
-Jobs displays that jobs4week
- which is adjusted by any change in either  week or year. By default it displays a list of this jobs4week
-. Jobs coming from the database are checked.  
+Jobs displays that jobs4week which is adjusted by any change in either  week or year. By default it displays a list of this jobs4week. Jobs coming from the database are checked but that check is not in the db. It just effects the local jobs4week array, indicating which jobs should be saved back for that week. 
 
-Save2week button takes all the checkes jobs in jobs4week
- and inserts or replaces that data at the server. 
+Save2week button takes all the checked jobs in jobs4week and inserts or replaces that data at the server. 
 
-Below jobs4week
- ish a search box that draws on allJobs to displays search results. 
+Below jobs4week is a search box that draws on allJobs to displays search results. 
 
-SearchResults has an edit pencil for each list item which takes you to addjobs populated with that job's info. 
+Searching
 
-## addjobs page
-Updating or deleting a job takes you back to the jobs page updating both the database and the allJobs array. When editing the job.name if you change it then update creates a new record with the new job.name. If categories change it just 
+foundJobs contains job, category, default. It has an `edit pencil` for each. The job name at the pencil is sent to `modjobs`. `Default` is a db jobs field that for alljobs that you want to show up every week by default. Changing it changes db jobs by finding the job, if there is a category, changing the category default, else change the job's default.
+
+## modjobs page
+After updating a job you are taken back to the jobs page updating db jobs and the foundjobs array. When editing the job.name if you change it then update creates a new record with the new job.name. 
+
+If categories change it just 
+
 * Does searchResults update when allJobs changes? do I care?
 
 Also in search jobs is a button that places a copy of that job in the jobs4week
