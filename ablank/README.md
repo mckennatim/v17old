@@ -16,4 +16,6 @@ Display an array of pages where only the one selected owns the route. Displaying
 throught a function you sent with a link 
 
 ## log
-### 2/5/21 3-ablank_context
+### 2/3/21 3-ablank_context
+### 2/4/21 4-abplank_hashroute_responsive-data
+In this iteration I dumped react-router opting using a `Ctrl` component that listens for `window.onhashchange` then sets the page based on that. That gets you <> navigation via your browser buttons. The other way to set a page is programatically from a nav bar or something.
