@@ -14,3 +14,6 @@ Display an array of pages where only the one selected owns the route. Displaying
 ### fetches in services or right out of control? 
 ### how do route pages send data back to control?
 throught a function you sent with a link 
+
+## log
+### 2/5/21 3-ablank_context
