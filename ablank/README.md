@@ -24,7 +24,7 @@ https://www.atlassian.com/git/tutorials/using-branches/git-checkout#:~:text=The%
 
 `git tag` lists all your tags
 
-In order to go back and run at a previous tag `git checkout 4-abplank_hashroute_responsive-data`. You don't want to make any changes here since your head is detached. 
+In order to go back and run at a previous tag `git checkout 4-abplank_hashroute_responsive-data`. You want to be all commited up before. oNCE YOU MOVE, You don't want to make any changes here since your head is detached. 
 
 To continue developing, you need to get back to the “current” state of your project: 
 
@@ -52,3 +52,4 @@ In this iteration I dumped react-router opting using a `Ctrl` component that lis
 ### 2/5/21 5-ablank_hash_resp.data_grid
 Navbar is on its own, Jobs, AddJob and Help are in the container
 ### 2/5/21 6-git-test
+### 
