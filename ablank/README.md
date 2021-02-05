@@ -24,12 +24,21 @@ https://www.atlassian.com/git/tutorials/using-branches/git-checkout#:~:text=The%
 
 `git tag` lists all your tags
 
-In order to go back and run at a previous tag `git checkout 3-ablank_context`. You don't want to make any changes here since your head is detached. 
+In order to go back and run at a previous tag `git checkout 4-abplank_hashroute_responsive-data`. You don't want to make any changes here since your head is detached. 
 
-To continue developing, you need to get back to the “current” state of your project:
+To continue developing, you need to get back to the “current” state of your project: 
+
+if git status says 
+
+    HEAD detached from 4-abplank_hashroute_responsive-data
+
+then reattach with
  
-    git checkout master
-    git revert or git reset
+    git checkout main
+
+but now if you have doene anything like a commit while you were back at 4, going to main says `Your branch is behind 'origin/main' by 1 commit, and can be fast-forwarded. (use "git pull" to update your local branch)`
+
+    git pull
 
 If you want to create a new branch from a prior tag to retain commits you create, you may do so (now or later) by using -b with the checkout command again. Example:
 
@@ -42,3 +51,4 @@ If you want to create a new branch from a prior tag to retain commits you create
 In this iteration I dumped react-router opting using a `Ctrl` component that listens for `window.onhashchange` then sets the page based on that. That gets you <> navigation via your browser buttons. The other way to set a page is programatically from a nav bar or something.
 ### 2/5/21 5-ablank_hash_resp.data_grid
 Navbar is on its own, Jobs, AddJob and Help are in the container
+### 2/5/21 6-git-test
