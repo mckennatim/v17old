@@ -1,5 +1,9 @@
 
-
+## gride css
+*https://css-tricks.com/look-ma-no-media-queries-responsive-layouts-using-css-grid/
+*https://medium.com/samsung-internet-dev/common-responsive-layouts-with-css-grid-and-some-without-245a862f48df
+*https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Grid_Layout/Realizing_common_layouts_using_CSS_Grid_Layout
+*
 
 
 ## bootstrapping authorization
@@ -16,6 +20,25 @@ Display an array of pages where only the one selected owns the route. Displaying
 throught a function you sent with a link 
 
 ## log
+https://www.atlassian.com/git/tutorials/using-branches/git-checkout#:~:text=The%20git%20checkout%20command%20lets,new%20commits%20on%20that%20branch.
+
+`git tag` lists all your tags
+
+In order to go back and run at a previous tag `git checkout 3-ablank_context`. You don't want to make any changes here since your head is detached. 
+
+To continue developing, you need to get back to the “current” state of your project:
+ 
+    git checkout master
+    git revert or git reset
+
+If you want to create a new branch from a prior tag to retain commits you create, you may do so (now or later) by using -b with the checkout command again. Example:
+
+    git checkout 3-ablank_context
+    git checkout -b <new-branch-name>
+    git branch //lists branches available
+
 ### 2/3/21 3-ablank_context
 ### 2/4/21 4-abplank_hashroute_responsive-data
 In this iteration I dumped react-router opting using a `Ctrl` component that listens for `window.onhashchange` then sets the page based on that. That gets you <> navigation via your browser buttons. The other way to set a page is programatically from a nav bar or something.
+### 2/5/21 5-ablank_hash_resp.data_grid
+Navbar is on its own, Jobs, AddJob and Help are in the container
