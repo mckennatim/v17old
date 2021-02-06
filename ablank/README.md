@@ -1,5 +1,13 @@
 
-## gride css
+## responsive routing
+Proof of concept is in `07ablank-resp-data-pag-grid` where `App`  sets the page and `Ctrl.changePage` runs `App.handle.Page=>setPage` which does the `history.push`. The other func in `App` that runs `setPage` is `window.onhashchange`
+
+Should the whole thing be in context? Does any page besides `App` well beloow `Ctrl` need access the page change machinery?
+
+Should touching somewhere on a page make it active in a multi-pane situation. Frome one page do you need to go to another, not by the nav menu?
+
+
+## grid css
 *https://css-tricks.com/look-ma-no-media-queries-responsive-layouts-using-css-grid/
 *https://medium.com/samsung-internet-dev/common-responsive-layouts-with-css-grid-and-some-without-245a862f48df
 *https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Grid_Layout/Realizing_common_layouts_using_CSS_Grid_Layout
@@ -50,6 +58,9 @@ If you want to create a new branch from a prior tag to retain commits you create
 ### 2/4/21 4-abplank_hashroute_responsive-data
 In this iteration I dumped react-router opting using a `Ctrl` component that listens for `window.onhashchange` then sets the page based on that. That gets you <> navigation via your browser buttons. The other way to set a page is programatically from a nav bar or something.
 ### 2/5/21 5-ablank_hash_resp.data_grid
-Navbar is on its own, Jobs, AddJob and Help are in the container
+Navbar is on its own, Jobs, AddJob and Help are in the grid container
 ### 2/5/21 6-git-test
-### 
+see git notes above
+### 2/5/21 07ablank-acontext-onresize-onhashchange
+moving functionality from App to context
+### 2/5/21 08ablank-lazyload

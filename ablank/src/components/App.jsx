@@ -1,29 +1,30 @@
 import React,{useContext, useEffect, useState} from 'react';
 import {AProvider, AContext} from '../contexts/acontext'
-import { createHashHistory } from 'history';
-let history = createHashHistory();
+// import { createHashHistory } from 'history';
+// let history = createHashHistory();
 
 export const App=(props)=> {
+  const {dev}=props
   console.log('APP RUN')
   console.log('window.location.hash: ', window.location.hash)
-  const[page, setPage] = useState()
+  // const[page, setPage] = useState()
   const{title}=props
 
-  window.onhashchange = ()=>{
-    console.log('window.location.hash: ', window.location.hash)
-    setPage(window.location.hash.substring(1))
-  }
+  // window.onhashchange = ()=>{
+  //   console.log('window.location.hash: ', window.location.hash)
+  //   setPage(window.location.hash)
+  // }
 
-  const handlePage=(p)=>()=>{
-    console.log('p: ', p)
-    history.push(p)
-    setPage(p)
-  }
+  // const handlePage=(p)=>()=>{
+  //   console.log('p: ', p)
+  //   history.push(p)
+  //   setPage(p)
+  // }
 
   return (
     <AProvider>
       <div>
-        <Ctrl title={title} page={page} changePage={handlePage}/>
+        <Ctrl title={title}/>
       </div>
     </AProvider>
   );
@@ -32,22 +33,23 @@ export const App=(props)=> {
 const Ctrl=(props)=>{
   console.log('CTRL RUN')
   console.log('window.location.hash: ', window.location.hash)
-  const{title, page, changePage}=props
+  const{title}=props
+  const{devInfo, page, handlePage} = useContext(AContext)
   console.log('page: ', page)
 
   const renderNav = ()=>{
     return(
     <nav style ={styles.nav.nav}>
-      <span>{title}</span>
+      <span> {title} {devInfo.dev} {devInfo.panes} </span>
       <ul style ={styles.nav.ul}>
         <li style ={styles.nav.li}>
-          <a onClick={changePage('/jobs')}>jobs</a>
+          <a onClick={handlePage('#/jobs')}>jobs</a>
         </li>
         <li style ={styles.nav.li}>
-          <a onClick={changePage('/addjob')}>addjob</a>
+          <a onClick={handlePage('#/addjob')}>addjob</a>
         </li>
         <li style ={styles.nav.li}>
-          <a onClick={changePage('/both')}>both</a>
+          <a onClick={handlePage('#/both')}>both</a>
         </li>
       </ul>
     </nav>
@@ -56,14 +58,14 @@ const Ctrl=(props)=>{
 
   const renderContent=()=>{
     console.log('page: ', page)
-    if (page=='/addjob'){
+    if (page=='#/addjob'){
       return(
         <div style ={styles.container}>
           <AddJob/>
         </div>
       )
     }
-    if (page=='/jobs' || page==undefined){
+    if (page=='#/jobs' || page==undefined){
       console.log('default is /jobs')
       return(
         <div style ={styles.container} >
@@ -72,7 +74,7 @@ const Ctrl=(props)=>{
         </div>
       )
     }
-    if (page=='/both'){
+    if (page=='#/both'){
       return(
         <div style ={styles.container}>
           <Jobs/>
