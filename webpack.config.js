@@ -22,8 +22,9 @@ module.exports = env =>{
               options: {
                 "presets": [
                   "@babel/preset-env",
-                  "@babel/preset-react"
-                ]
+                  "@babel/preset-react",
+                ],
+                "plugins": ['@babel/plugin-syntax-dynamic-import']
               },
             }
           ]
@@ -42,9 +43,21 @@ module.exports = env =>{
         }      
       ],
     },
+    optimization: {
+      splitChunks: {
+        cacheGroups: {
+         vendor: {
+          test: /node_modules/,
+          chunks: 'initial',
+          name: 'vendor',
+          enforce: true
+         }
+        }
+      },
+    },
     plugins: [
       new CleanWebpackPlugin({
-        cleanOnceBeforeBuildPatterns: ['*.js', '*.js.map'] 
+        cleanOnceBeforeBuildPatterns: ['*.js', '*.js.map', '*.txt'] 
       }),
       new HtmlWebpackPlugin({
         template: './src/index.html',

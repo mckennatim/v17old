@@ -1,5 +1,11 @@
+## code-splitting lazy load
+*https://medium.com/@abhayshiravanthe/modules-and-code-splitting-in-webpack-5-6ce0a58d7f36
 
 ## responsive routing
+*https://www.digitalocean.com/community/tutorials/react-crud-context-hooks
+
+*https://reactarmory.com/guides/context-free-react-router
+
 Proof of concept is in `07ablank-resp-data-pag-grid` where `App`  sets the page and `Ctrl.changePage` runs `App.handle.Page=>setPage` which does the `history.push`. The other func in `App` that runs `setPage` is `window.onhashchange`
 
 Should the whole thing be in context? Does any page besides `App` well beloow `Ctrl` need access the page change machinery?
@@ -9,9 +15,12 @@ Should touching somewhere on a page make it active in a multi-pane situation. Fr
 
 ## grid css
 *https://css-tricks.com/look-ma-no-media-queries-responsive-layouts-using-css-grid/
+
 *https://medium.com/samsung-internet-dev/common-responsive-layouts-with-css-grid-and-some-without-245a862f48df
+
 *https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Grid_Layout/Realizing_common_layouts_using_CSS_Grid_Layout
-*
+
+*https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Grid_Layout/Realizing_common_layouts_using_CSS_Grid_Layout
 
 
 ## bootstrapping authorization
@@ -63,4 +72,5 @@ Navbar is on its own, Jobs, AddJob and Help are in the grid container
 see git notes above
 ### 2/5/21 07ablank-acontext-onresize-onhashchange
 moving functionality from App to context
-### 2/5/21 08ablank-lazyload
+### 2/5/21 08ablank-code-splitting
+works in dev but not prod, but prod build is so tiny, 

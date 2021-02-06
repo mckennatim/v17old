@@ -2,7 +2,6 @@ var path = require('path');
 var webpack = require('webpack');
 const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const outdir = 'cascada2'
 
 module.exports=env=>{
   const{appdir,proddir} =env
@@ -28,7 +27,8 @@ module.exports=env=>{
               "presets": [
                 "@babel/preset-env",
                 "@babel/preset-react"
-              ]
+              ],
+              "plugins": ['@babel/plugin-syntax-dynamic-import']
             },
           }
         },
@@ -63,7 +63,8 @@ module.exports=env=>{
           name: 'vendor',
           enforce: true
          }
-        }
+        },
+        chunks:'all'
       },
     },
     plugins: [
@@ -71,7 +72,7 @@ module.exports=env=>{
         'process.env.NODE_ENV': JSON.stringify('production')
       }),
       new CleanWebpackPlugin({
-        cleanOnceBeforeBuildPatterns: ['*.js', '*.js.map']  
+        cleanOnceBeforeBuildPatterns: ['*.js', '*.js.map', '*.txt']  
       }),
       new HtmlWebpackPlugin({
         template: './src/index.html',
